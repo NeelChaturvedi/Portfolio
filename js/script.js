@@ -58,3 +58,46 @@ const typed = new Typed('.multiple-text', {
     backdelay: 1000,
     loop: true
 });
+
+/*==================== audio adder ====================*/
+// Get the audio element
+const backgroundMusic = document.getElementById('background-music');
+
+// Get the image element
+const image = document.querySelector('.home-img img'); // Adjust the selector as per your HTML structure
+
+// Flag to track if audio has been started
+let audioStarted = false;
+// Variable to store the playback position
+let playbackPosition = 0;
+
+// Function to start playing the audio
+function startBackgroundMusic() {
+  // Check if audio has not been started yet
+  if (!audioStarted) {
+    backgroundMusic.play();
+    audioStarted = true;
+  }
+}
+
+// Function to pause the audio and store the playback position when moving the mouse away from the image
+function pauseAndStorePosition() {
+  if (audioStarted && !backgroundMusic.paused) {
+    backgroundMusic.pause();
+    playbackPosition = backgroundMusic.currentTime; // Store the current playback position
+  }
+}
+
+// Function to resume playback from the stored position when moving the mouse back over the image
+function resumeFromStoredPosition() {
+  if (audioStarted) {
+    backgroundMusic.currentTime = playbackPosition; // Set the playback position
+    backgroundMusic.play(); // Resume playback
+  }
+}
+
+// Add event listeners for mouse enter and leave to control audio playback
+image.addEventListener('mouseenter', startBackgroundMusic);
+image.addEventListener('mouseleave', pauseAndStorePosition);
+image.addEventListener('mouseenter', resumeFromStoredPosition);
+
